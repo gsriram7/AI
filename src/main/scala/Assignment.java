@@ -39,7 +39,7 @@ class Board {
                 break;
         }
 
-        for (int r = row, c = col; c >= 0 && r < board.length; r++, c--) {
+        for (int r = row, c = col; r >= 0 && c < board.length; r--, c++) {
             int currentValue = board[r][c];
             if (currentValue == lizard)
                 return false;
@@ -50,6 +50,9 @@ class Board {
         return true;
     }
 
+    boolean tes() {
+        return true;
+    }
 }
 
 public class Assignment {
