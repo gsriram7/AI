@@ -100,4 +100,27 @@ public class BoardTest {
 
         assertThat(game.isSafe(2,1), is(true));
     }
+
+    @Test
+    public void shouldPlaceTree() throws Exception {
+        game.placeTreeIn(1, 1);
+
+        assertThat(game.board[1][1], is(game.tree));
+    }
+
+    @Test
+    public void shouldPlaceLizard() throws Exception {
+        game.placeLizardIn(1, 1);
+
+        assertThat(game.board[1][1], is(game.lizard));
+    }
+
+    @Test
+    public void shouldRemoveLizard() throws Exception {
+        game.placeLizardIn(1, 1);
+        assertThat(game.board[1][1], is(game.lizard));
+
+        game.removeLizardIn(1, 1);
+        assertThat(game.board[1][1], is(game.empty));
+    }
 }
