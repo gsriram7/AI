@@ -47,9 +47,6 @@ class Board {
         return true;
     }
 
-    boolean tes() {
-        return true;
-    }
 }
 
 public class Assignment {
