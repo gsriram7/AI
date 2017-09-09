@@ -17,7 +17,7 @@ public class Assignment {
         game.placeTreeIn(row, col);
     }
 
-    boolean solution() {
+    boolean dfs() {
         boolean complete = false;
         int remainingLizards = this.lizards;
 
@@ -30,25 +30,42 @@ public class Assignment {
             int col = cell.col;
 
             if (game.isSafe(row, col)) {
+                remainingLizards--;
                 pushNextStatesOf(cell);
                 result.push(cell);
                 game.placeLizardIn(row, col);
             }
 
+            else {
+                if (trace.peek().row <= result.peek().row) {
+                    remainingLizards++;
+                    Cell popped = result.pop();
+                    game.removeLizardIn(popped.row, popped.col);
+                }
+            }
+
         }
-        return complete;
+
+        return remainingLizards == 0;
     }
 
     void pushNextStatesOf(Cell cell) {
-        if (cell.row < game.board.length) {
-            for (int col = 0; col < game.board.length; col++) {
-                int nextRow = cell.row + 1;
+        int nextRow = cell.row + 1;
+        if (nextRow < game.board.length) {
+            for (int col = game.board.length - 1; col >= 0; col--) {
                 if (game.board[nextRow][col] != game.tree)
                     trace.push(new Cell(nextRow, col));
             }
         }
     }
 
+    void startDFS() {
+        for (int col = game.board.length - 1; col >= 0 ; col--) {
+            trace.push(new Cell(0, col));
+        }
+        System.out.println(dfs());
+        System.out.println(game.toString());
+    }
 
     public static void main(String[] args) {
         Scanner kb = new Scanner(System.in);
@@ -70,7 +87,8 @@ public class Assignment {
 
         kb.close();
 
-        System.out.println(assignment.game.toString());
+        assignment.startDFS();
+
     }
 
 
