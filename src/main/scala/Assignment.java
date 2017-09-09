@@ -2,14 +2,11 @@ class Board {
 
     int[][] board;
     int empty = 0;
-    int tree = 1;
-    int lizard = 2;
+    int lizard = 1;
+    int tree = 2;
 
     Board(int size) {
         board = new int[size][size];
-        for (int i = 0; i < size; i++)
-            for (int j = 0; j < size; j++)
-                board[i][j] = empty;
     }
 
     boolean isSafe(int row, int col) {

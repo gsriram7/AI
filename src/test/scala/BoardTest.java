@@ -56,4 +56,11 @@ public class BoardTest {
         assertThat(board.isSafe(3, 0), is(false));
     }
 
+    @Test
+    public void shouldFailWhenLizardOnPath() throws Exception {
+        board.board[0][1] = board.lizard;
+        board.board[1][3] = board.lizard;
+
+        assertThat(board.isSafe(2,0), is(true));
+    }
 }
