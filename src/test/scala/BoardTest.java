@@ -6,61 +6,98 @@ import static org.junit.Assert.*;
 
 public class BoardTest {
 
-    private Board board;
+    private Board game;
 
     @Before
     public void setUp() throws Exception {
-        board = new Board(4);
+        game = new Board(4);
     }
 
     @Test
-    public void shouldReturnFalseWhenTryingToPlaceOnANonEmptyCell() throws Exception {
-        board.board[0][0] = board.lizard;
-
-        assertThat(board.isSafe(0, 0), is(false));
+    public void shouldPassIfThereAreNoLizards() throws Exception {
+        assertThat(game.isSafe(0, 0), is(true));
     }
 
     @Test
-    public void testRowWithOneLizard() throws Exception {
-        board.board[0][0] = board.lizard;
+    public void shouldFailIfTriedToPlaceOnANonEmptyCell() throws Exception {
+        game.board[0][0] = game.lizard;
 
-        assertThat(board.isSafe(0, 1), is(false));
-        assertThat(board.isSafe(0, 2), is(false));
-        assertThat(board.isSafe(0, 3), is(false));
+        assertThat(game.isSafe(0, 0), is(false));
     }
 
     @Test
-    public void testColumnWithOneLizard() throws Exception {
-        board.board[0][0] = board.lizard;
+    public void shouldReturnFalseWhenRowWithOneLizard() throws Exception {
+        game.board[0][0] = game.lizard;
 
-        assertThat(board.isSafe(1, 0), is(false));
-        assertThat(board.isSafe(2, 0), is(false));
-        assertThat(board.isSafe(3, 0), is(false));
+        assertThat(game.isSafe(0, 1), is(false));
+        assertThat(game.isSafe(0, 2), is(false));
+        assertThat(game.isSafe(0, 3), is(false));
     }
 
     @Test
-    public void testUpperLeftDiagonalWithOneLizard() throws Exception {
-        board.board[0][0] = board.lizard;
+    public void shouldFailIfColumnHasLizard() throws Exception {
+        game.board[0][0] = game.lizard;
 
-        assertThat(board.isSafe(1, 1), is(false));
-        assertThat(board.isSafe(2, 2), is(false));
-        assertThat(board.isSafe(3, 3), is(false));
+        assertThat(game.isSafe(1, 0), is(false));
+        assertThat(game.isSafe(2, 0), is(false));
+        assertThat(game.isSafe(3, 0), is(false));
     }
 
     @Test
-    public void testUpperRightDiagonalWithOneLizard() throws Exception {
-        board.board[0][3] = board.lizard;
+    public void shouldFailIfLeftDiagonalHasLizard() throws Exception {
+        game.board[0][0] = game.lizard;
 
-        assertThat(board.isSafe(1, 2), is(false));
-        assertThat(board.isSafe(2, 1), is(false));
-        assertThat(board.isSafe(3, 0), is(false));
+        assertThat(game.isSafe(1, 1), is(false));
+        assertThat(game.isSafe(2, 2), is(false));
+        assertThat(game.isSafe(3, 3), is(false));
+    }
+
+    @Test
+    public void shouldFailIfRightDiagonalHasLizard() throws Exception {
+        game.board[0][3] = game.lizard;
+
+        assertThat(game.isSafe(1, 2), is(false));
+        assertThat(game.isSafe(2, 1), is(false));
+        assertThat(game.isSafe(3, 0), is(false));
     }
 
     @Test
     public void shouldFailWhenLizardOnPath() throws Exception {
-        board.board[0][1] = board.lizard;
-        board.board[1][3] = board.lizard;
+        game.board[0][1] = game.lizard;
+        game.board[1][3] = game.lizard;
 
-        assertThat(board.isSafe(2,0), is(true));
+        assertThat(game.isSafe(2,0), is(true));
+    }
+
+    @Test
+    public void shouldPassIfATreeInColumnBeforeLizard() throws Exception {
+        game.board[0][2] = game.lizard;
+        game.board[1][2] = game.tree;
+
+        assertThat(game.isSafe(2,2), is(true));
+    }
+
+    @Test
+    public void shouldPassIfATreeInRowBeforeLizard() throws Exception {
+        game.board[1][0] = game.lizard;
+        game.board[1][1] = game.tree;
+
+        assertThat(game.isSafe(1,3), is(true));
+    }
+
+    @Test
+    public void shouldPassIfATreeInLeftDiagonalBeforeLizard() throws Exception {
+        game.board[0][0] = game.lizard;
+        game.board[1][1] = game.tree;
+
+        assertThat(game.isSafe(2,2), is(true));
+    }
+
+    @Test
+    public void shouldPassIfATreeInRightDiagonalBeforeLizard() throws Exception {
+        game.board[0][3] = game.lizard;
+        game.board[1][2] = game.tree;
+
+        assertThat(game.isSafe(2,1), is(true));
     }
 }

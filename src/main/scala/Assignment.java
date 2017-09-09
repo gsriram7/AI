@@ -13,14 +13,14 @@ class Board {
         if (board[row][col] != empty)
             return false;
 
-        for (int c = col; c >= 0; c--) {
+        for (int c = col - 1; c >= 0; c--) {
             if (board[row][c] == lizard)
                 return false;
             else if (board[row][c] == tree)
                 break;
         }
 
-        for (int r = row; r >= 0; r--) {
+        for (int r = row - 1; r >= 0; r--) {
             int currentValue = board[r][col];
             if (currentValue == lizard)
                 return false;
@@ -28,7 +28,7 @@ class Board {
                 break;
         }
 
-        for (int r = row, c = col; r >= 0 && c >= 0; r--, c--) {
+        for (int r = row - 1, c = col - 1; r >= 0 && c >= 0; r--, c--) {
             int currentValue = board[r][c];
             if (currentValue == lizard)
                 return false;
@@ -36,7 +36,7 @@ class Board {
                 break;
         }
 
-        for (int r = row, c = col; r >= 0 && c < board.length; r--, c++) {
+        for (int r = row - 1, c = col + 1; r >= 0 && c < board.length; r--, c++) {
             int currentValue = board[r][c];
             if (currentValue == lizard)
                 return false;
