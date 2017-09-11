@@ -30,10 +30,10 @@ public class Assignment {
             int col = cell.col;
 
             if (game.isSafe(row, col)) {
+                game.placeLizardIn(row, col);
                 remainingLizards--;
                 pushNextStatesOf(cell);
                 result.push(cell);
-                game.placeLizardIn(row, col);
             }
 
             else {
@@ -53,7 +53,7 @@ public class Assignment {
         int nextRow = cell.row + 1;
         if (nextRow < game.board.length) {
             for (int col = game.board.length - 1; col >= 0; col--) {
-                if (game.board[nextRow][col] != game.tree)
+                if (game.isSafe(nextRow, col))
                     trace.push(new Cell(nextRow, col));
             }
         }
