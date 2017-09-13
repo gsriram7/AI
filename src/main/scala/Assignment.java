@@ -20,8 +20,10 @@ public class Assignment {
     boolean dfs() {
         boolean complete = false;
         int remainingLizards = this.lizards;
+        int iter = 0;
 
         while (!trace.empty()) {
+            iter++;
             if (remainingLizards == 0)
                 return true;
 
