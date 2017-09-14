@@ -14,9 +14,14 @@ public class AssignmentTest {
 
     @Test
     public void shouldCheckIfValidSolution() throws Exception {
-        Assignment assignment = new Assignment(32, 32);
+        Assignment assignment = new Assignment(8, 9);
 
+            assignment.placeTree(3, 4);
+            assignment.placeTree(5, 5);
+
+        long start = System.currentTimeMillis();
         assignment.startDFS();
+        System.out.println("Took: " + (System.currentTimeMillis() - start));
 
         assertThat(testValidity(assignment.game), is(true));
     }

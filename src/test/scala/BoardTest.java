@@ -62,6 +62,21 @@ public class BoardTest {
     }
 
     @Test
+    public void shouldFailIfRightRowHasLizard() throws Exception {
+        game.board[0][0] = game.lizard;
+        game.board[1][3] = game.lizard;
+
+        assertThat(game.isSafe(1, 2), is(false));
+    }
+
+    @Test
+    public void shouldFailIfBelowColumnHasLizard() throws Exception {
+        game.board[2][2] = game.lizard;
+
+        assertThat(game.isSafe(1, 2), is(false));
+    }
+
+    @Test
     public void shouldFailWhenLizardOnPath() throws Exception {
         game.board[0][1] = game.lizard;
         game.board[1][3] = game.lizard;
@@ -99,6 +114,20 @@ public class BoardTest {
         game.board[1][2] = game.tree;
 
         assertThat(game.isSafe(2,1), is(true));
+    }
+
+    @Test
+    public void shouldFailIfALizardInRightDiagonalBelow() throws Exception {
+        game.board[3][2] = game.lizard;
+
+        assertThat(game.isSafe(2,1), is(false));
+    }
+
+    @Test
+    public void shouldFailIfALizardInLeftDiagonalBelow() throws Exception {
+        game.board[3][0] = game.lizard;
+
+        assertThat(game.isSafe(2,1), is(false));
     }
 
     @Test
