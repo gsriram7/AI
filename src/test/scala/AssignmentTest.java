@@ -14,19 +14,37 @@ public class AssignmentTest {
 
     @Test
     public void shouldCheckIfValidSolution() throws Exception {
-        Assignment assignment = new Assignment(8, 9);
+        Assignment assignment = new Assignment(6, 7);
 
-            assignment.placeTree(3, 4);
-            assignment.placeTree(5, 5);
+        for (int i = 0; i < 6; i++) {
+            assignment.placeTree(4, i);
+        }
+        for (int i = 0; i < 6; i++) {
+            assignment.placeTree(i, 4);
+        }
 
         long start = System.currentTimeMillis();
         assignment.startDFS();
-        System.out.println("Took: " + (System.currentTimeMillis() - start));
+        System.out.println("Took: " + (System.currentTimeMillis() - start) + "ms");
 
         assertThat(testValidity(assignment.game), is(true));
+        assertThat(testValidityAgain(assignment.game), is(true));
     }
 
-    private boolean testValidity(Board game) {
+    private boolean testValidityAgain(Board game) {
+        int[][] board = game.board;
+        for (int row = 0; row < board.length; row++) {
+            for (int col = 0; col < board.length; col++) {
+                if (board[row][col] == game.lizard) {
+                    if (!game.isSafe(row, col, false))
+                        return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    boolean testValidity(Board game) {
         int[][] board = game.board;
         for (int row = 0; row < board.length; row++) {
             for (int col = 0; col < board.length; col++) {

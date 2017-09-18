@@ -11,8 +11,15 @@ class Board {
         board = new int[size][size];
     }
 
-    boolean isSafe(int row, int col) {
-        if (board[row][col] != empty)
+    Board(Board board){
+        int N = board.board.length;;
+        this.board = new int[N][N];
+        for (int i = 0; i < N; i++)
+            System.arraycopy(board.board[i], 0, this.board[i], 0, N);
+    }
+
+    boolean isSafe(int row, int col, boolean checkCurrentCell) {
+        if (checkCurrentCell && board[row][col] != empty)
             return false;
 
         for (int c = col - 1; c >= 0; c--) {
@@ -78,6 +85,10 @@ class Board {
         }
 
         return true;
+    }
+
+    boolean isSafe(int row, int col){
+        return isSafe(row, col, true);
     }
 
     void placeTreeIn(int row, int col) {
