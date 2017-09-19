@@ -13,7 +13,7 @@ public class SimulatedAnnealingTest {
 
     @Before
     public void setUp() throws Exception {
-        size = 5;
+        size = 6;
         board = new Board(size);
     }
 
@@ -118,11 +118,23 @@ public class SimulatedAnnealingTest {
 
     @Test
     public void shouldReturnSafeStatesForLizardsWithNoTrees() throws Exception {
-        SimulatedAnnealing sa = new SimulatedAnnealing(board, size);
+        for (int i = 0; i < 6; i++) {
+            board.placeTreeIn(i, 4);
+        }
 
-        assertThat(sa.simulate(1000, 0.2), is(true));
+        for (int i = 0; i < 6; i++) {
+            board.placeTreeIn(4, i);
+        }
 
+        SimulatedAnnealing sa = new SimulatedAnnealing(board, 7);
+
+        long start = System.currentTimeMillis();
+        boolean simulate = sa.simulate(1000, 0.98);
+        long end = System.currentTimeMillis() - start;
+
+        assertThat(simulate, is(true));
         assertThat(new AssignmentTest().testValidity(sa.currentState), is(true));
+        System.out.printf("Took %d ms", end);
     }
 
     ArrayList<Cell> diff(List<Cell> a, List<Cell> b) {

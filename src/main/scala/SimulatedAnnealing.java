@@ -6,11 +6,13 @@ public class SimulatedAnnealing {
     Board currentState;
     ArrayList<Cell> lizardsInBoard;
     ArrayList<Cell> newLizardsInBoard;
+    int totalLizards;
 
     SimulatedAnnealing(Board board, int lizards) {
         currentState = board;
         lizardsInBoard = new ArrayList<>();
         newLizardsInBoard = new ArrayList<>();
+        totalLizards = lizards;
         placeRandomLizards(lizards);
         currentScore = calculateScore(currentState, lizardsInBoard);
     }
@@ -62,7 +64,6 @@ public class SimulatedAnnealing {
         if (currentScore == 0) return true;
         long startTime = System.currentTimeMillis();
         while (temperature > 0) {
-            System.out.println(currentState);
             Board newState = newChildren(currentState);
             int newScore = calculateScore(newState, newLizardsInBoard);
 
@@ -78,8 +79,9 @@ public class SimulatedAnnealing {
                 acceptNewState(newState, newScore);
             }
 
-            if ((System.currentTimeMillis() - startTime) >= 240000) return currentScore == 0;
-            temperature = temperature - coolingFactor;
+            if ((System.currentTimeMillis() - startTime) >= 280000) return currentScore == 0;
+            temperature = temperature * coolingFactor;
+            System.out.println(newScore);
         }
         System.out.println("Exiting as temperature is 0: " + temperature);
         return currentScore == 0;
@@ -97,7 +99,7 @@ public class SimulatedAnnealing {
         Board copy = new Board(board);
         newLizardsInBoard.addAll(lizardsInBoard);
 
-        int index = (int) (Math.random() * copy.board.length);
+        int index = (int) (Math.random() * totalLizards);
 
         Cell randomLiz = newLizardsInBoard.get(index);
 
@@ -115,7 +117,7 @@ public class SimulatedAnnealing {
         Board board = new Board(5);
         SimulatedAnnealing sa = new SimulatedAnnealing(board, 5);
 
-        sa.simulate(1000, 0.1);
+        sa.simulate(1000, 0.98);
         System.out.println(sa.currentState);
     }
 
