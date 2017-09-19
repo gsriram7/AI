@@ -105,10 +105,13 @@ class Board {
 
     @Override
     public String toString() {
-        String boardView = "Board:";
-        for (int[] row : board) {
-            boardView = boardView + "\n" + Arrays.toString(row);
+        StringBuilder boardView = new StringBuilder();
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                boardView.append(board[i][j]);
+            }
+            boardView.append("\n");
         }
-        return boardView;
+        return boardView.toString();
     }
 }

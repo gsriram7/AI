@@ -13,6 +13,11 @@ public class Assignment {
         this.lizards = lizards;
     }
 
+    Assignment(Board board, int lizards) {
+        game = board;
+        this.lizards = lizards;
+    }
+
     void placeTree(int row, int col) {
         game.placeTreeIn(row, col);
     }
@@ -59,14 +64,13 @@ public class Assignment {
         }
     }
 
-    void startDFS() {
+    boolean startDFS() {
         for (int row = game.board.length - 1; row >= 0; row--) {
             for (int col = game.board.length - 1; col >= 0; col--) {
                 trace.push(new Cell(row, col));
             }
         }
-        System.out.println(dfs());
-        System.out.println(game.toString());
+        return dfs();
     }
 
     public static void main(String[] args) {

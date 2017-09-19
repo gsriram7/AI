@@ -69,7 +69,6 @@ public class SimulatedAnnealing {
 
             if (newScore == 0) {
                 acceptNewState(newState, newScore);
-                System.out.println(currentState);
                 return true;
             }
 
@@ -81,9 +80,7 @@ public class SimulatedAnnealing {
 
             if ((System.currentTimeMillis() - startTime) >= 280000) return currentScore == 0;
             temperature = temperature * coolingFactor;
-            System.out.println(newScore);
         }
-        System.out.println("Exiting as temperature is 0: " + temperature);
         return currentScore == 0;
     }
 
@@ -117,7 +114,7 @@ public class SimulatedAnnealing {
         Board board = new Board(5);
         SimulatedAnnealing sa = new SimulatedAnnealing(board, 5);
 
-        sa.simulate(1000, 0.98);
+        boolean isDone = sa.simulate(1000, 0.98);
         System.out.println(sa.currentState);
     }
 
