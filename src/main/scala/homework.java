@@ -2,8 +2,8 @@ import java.io.*;
 
 public class homework {
     public static void main(String[] args) throws IOException {
-        File source = new File("/Users/selvaram/selva/AI/src/main/resources/input.txt");
-        File dest = new File("/Users/selvaram/selva/AI/src/main/resources/output.txt");
+        File source = new File("input.txt");
+        File dest = new File("output.txt");
 
         BufferedReader in = new BufferedReader(new FileReader(source));
 
@@ -43,7 +43,8 @@ public class homework {
             }
         }
         else {
-            Assignment dfs = new Assignment(board, lizards);
+            Search dfs = new Search(board, lizards);
+            if (tree == 0) dfs.isOptimized = true;
             if (dfs.startDFS()) {
                 out.write("OK\n");
                 out.write(dfs.game.toString());

@@ -1,19 +1,19 @@
-import java.util.Scanner;
 import java.util.Stack;
 
-public class Assignment {
+class Search {
 
     final int lizards;
     Board game;
     Stack<Cell> trace = new Stack<>();
     Stack<Cell> result = new Stack<>();
+    boolean isOptimized = false;
 
-    Assignment(int size, int lizards) {
+    Search(int size, int lizards) {
         game = new Board(size);
         this.lizards = lizards;
     }
 
-    Assignment(Board board, int lizards) {
+    Search(Board board, int lizards) {
         game = board;
         this.lizards = lizards;
     }
@@ -39,9 +39,9 @@ public class Assignment {
             if (game.isSafe(row, col)) {
                 game.placeLizardIn(row, col);
                 remainingLizards--;
-                pushNextStatesOf();
+                if (isOptimized) pushNextStates(cell); else pushNextStates();
                 result.push(cell);
-            } else if (row <= result.peek().row) {
+            } else if (!result.isEmpty() && row <= result.peek().row) {
                 while (!result.isEmpty() && row <= result.peek().row) {
                     remainingLizards++;
                     Cell popped = result.pop();
@@ -55,11 +55,21 @@ public class Assignment {
         return remainingLizards == 0;
     }
 
-    void pushNextStatesOf() {
+    void pushNextStates() {
         for (int row = game.board.length - 1; row >= 0; row--) {
             for (int col = game.board.length - 1; col >= 0; col--) {
                 if (game.isSafe(row, col))
                     trace.push(new Cell(row, col));
+            }
+        }
+    }
+
+    void pushNextStates(Cell cell) {
+        int nextRow = cell.row + 1;
+        if (nextRow < game.board.length) {
+            for (int col = game.board.length - 1; col >= 0; col--) {
+                if (game.isSafe(nextRow, col))
+                    trace.push(new Cell(nextRow, col));
             }
         }
     }
@@ -72,30 +82,5 @@ public class Assignment {
         }
         return dfs();
     }
-
-    public static void main(String[] args) {
-        Scanner kb = new Scanner(System.in);
-
-        String algorithm = kb.nextLine();
-        int dimension = kb.nextInt();
-        int liz = kb.nextInt();
-        kb.nextLine();
-
-        Assignment assignment = new Assignment(dimension, liz);
-
-        for (int i = 0; i < dimension; i++) {
-            String row = kb.nextLine();
-            for (int j = 0; j < row.length(); j++) {
-                if (row.charAt(j) == '2')
-                    assignment.placeTree(i, j);
-            }
-        }
-
-        kb.close();
-
-        assignment.startDFS();
-
-    }
-
 
 }

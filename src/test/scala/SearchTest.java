@@ -3,32 +3,47 @@ import org.junit.Test;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-public class AssignmentTest {
+public class SearchTest {
 
     @Test
     public void shouldReturnFalseIfThereIsNoSolution() throws Exception {
-        Assignment assignment = new Assignment(3, 3);
+        Search search = new Search(3, 3);
 
-        assertThat(assignment.dfs(), is(false));
+        assertThat(search.dfs(), is(false));
     }
 
     @Test
     public void shouldCheckIfValidSolution() throws Exception {
-        Assignment assignment = new Assignment(6, 7);
+        Search search = new Search(6, 7);
 
         for (int i = 0; i < 6; i++) {
-            assignment.placeTree(4, i);
+            search.placeTree(4, i);
         }
         for (int i = 0; i < 6; i++) {
-            assignment.placeTree(i, 4);
+            search.placeTree(i, 4);
         }
 
         long start = System.currentTimeMillis();
-        assignment.startDFS();
+        search.startDFS();
         System.out.println("Took: " + (System.currentTimeMillis() - start) + "ms");
 
-        assertThat(testValidity(assignment.game), is(true));
-        assertThat(testValidityAgain(assignment.game), is(true));
+        assertThat(testValidity(search.game), is(true));
+        assertThat(testValidityAgain(search.game), is(true));
+    }
+
+    @Test
+    public void shouldTestOptimizedDfs() throws Exception {
+        for (int i = 20; i < 45; i++) {
+            Search dfs = new Search(i, i);
+
+            long start = System.currentTimeMillis();
+            dfs.startDFS();
+            long timeTaken = System.currentTimeMillis() - start;
+            System.out.printf("%d Took: %dms\n", i, timeTaken);
+
+            assertThat(testValidity(dfs.game), is(true));
+            assertThat(testValidityAgain(dfs.game), is(true));
+        }
     }
 
     private boolean testValidityAgain(Board game) {

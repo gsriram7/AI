@@ -133,7 +133,7 @@ public class SimulatedAnnealingTest {
         long end = System.currentTimeMillis() - start;
 
         assertThat(simulate, is(true));
-        assertThat(new AssignmentTest().testValidity(sa.currentState), is(true));
+        assertThat(new SearchTest().testValidity(sa.currentState), is(true));
         System.out.printf("Took %d ms", end);
     }
 
