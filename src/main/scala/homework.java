@@ -2,8 +2,8 @@ import java.io.*;
 
 public class homework {
     public static void main(String[] args) throws IOException {
-        File source = new File("input.txt");
-        File dest = new File("output.txt");
+        File source = new File("/Users/selvaram/selva/AI/src/main/resources/input.txt");
+        File dest = new File("/Users/selvaram/selva/AI/src/main/resources/output.txt");
 
         BufferedReader in = new BufferedReader(new FileReader(source));
 
@@ -24,40 +24,64 @@ public class homework {
         }
 
         in.close();
+        Board copy = new Board(board);
 
-        BufferedWriter out = new BufferedWriter(new FileWriter(dest));
+        writeFailure(dest);
         if (!doesSolExist(dimension, lizards, tree)) {
-            out.write("FAIL");
-            out.close();
+            writeFailure(dest);
             System.exit(0);
         }
         if ("SA".equals(algo)) {
             SimulatedAnnealing sa = new SimulatedAnnealing(board, lizards);
             boolean isScuccessful = sa.simulate(1000, 0.98);
-            if (isScuccessful) {
-                out.write("OK\n");
-                out.write(sa.currentState.toString());
-            }
-            else {
-                out.write("FAIL");
-            }
-        }
-        else {
+            if (isScuccessful) writeSuccess(dest, sa.currentState.toString());
+            else writeFailure(dest);
+        } else {
             Search dfs = new Search(board, lizards);
             if (tree == 0) dfs.isOptimized = true;
             if (dfs.startDFS()) {
-                out.write("OK\n");
-                out.write(dfs.game.toString());
-            }
-            else {
-                out.write("FAIL");
+                writeSuccess(dest, dfs.game.toString());
+            } else {
+                if (!dfs.isOptimized) {
+                    if (!fallback(copy, lizards, dest))
+                        writeFailure(dest);
+                }
+                else
+                    writeFailure(dest);
             }
         }
+    }
 
-        out.close();
+    private static void writeSuccess(File out, String result) throws IOException {
+        BufferedWriter output = new BufferedWriter(new FileWriter(out));
+        output.write("OK\n");
+        output.write(result);
+        output.close();
+    }
+
+    private static void writeFailure(File out) throws IOException {
+        BufferedWriter output = new BufferedWriter(new FileWriter(out));
+        output.write("FAIL");
+        output.close();
+    }
+
+    private static boolean fallback(Board copy, int lizards, File dest) throws IOException {
+        Search search = new Search(copy, lizards);
+        search.isOptimized = true;
+        search.timeOut = 20;
+        boolean isComplete = false;
+        try {
+            isComplete = search.startDFS();
+        } catch (Exception e) {
+            isComplete = false;
+        }
+
+        if (isComplete) writeSuccess(dest, search.game.toString());
+        return isComplete;
     }
 
     private static boolean doesSolExist(int dimension, int lizards, int trees) {
+        if (lizards > (dimension * dimension - trees)) return false;
         if (dimension < 3) return lizards < dimension;
         if (dimension == 3 && trees == 0) return lizards < 3;
         return lizards <= (dimension + trees);

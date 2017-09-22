@@ -62,7 +62,7 @@ public class SimulatedAnnealing {
 
     boolean simulate(double temperature, double coolingFactor) {
         if (currentScore == 0) return true;
-        long startTime = System.currentTimeMillis();
+        long startTime = System.nanoTime();
         while (temperature > 0) {
             Board newState = newChildren(currentState);
             int newScore = calculateScore(newState, newLizardsInBoard);
@@ -78,7 +78,7 @@ public class SimulatedAnnealing {
                 acceptNewState(newState, newScore);
             }
 
-            if ((System.currentTimeMillis() - startTime) >= 280000) return currentScore == 0;
+            if (((double) (System.nanoTime() - startTime)/ 1000000000.0) >= 280) return currentScore == 0;
             temperature = temperature * coolingFactor;
         }
         return currentScore == 0;

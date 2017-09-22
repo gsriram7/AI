@@ -7,6 +7,7 @@ class Search {
     Stack<Cell> trace = new Stack<>();
     Stack<Cell> result = new Stack<>();
     boolean isOptimized = false;
+    double timeOut = 260;
 
     Search(int size, int lizards) {
         game = new Board(size);
@@ -23,12 +24,12 @@ class Search {
     }
 
     boolean dfs() {
-        boolean complete = false;
         int remainingLizards = this.lizards;
-        int iter = 0;
 
+        long startTime = System.nanoTime();
         while (!trace.empty()) {
-            iter++;
+            if (((double) (System.nanoTime() - startTime) / 1000000000.0) >= timeOut) return remainingLizards == 0;
+
             if (remainingLizards == 0)
                 return true;
 
