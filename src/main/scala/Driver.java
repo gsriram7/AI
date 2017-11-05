@@ -1,9 +1,16 @@
 import java.io.*;
 
-public class homework {
+public class Driver {
+
     public static void main(String[] args) throws IOException {
-        File source = new File("/Users/selvaram/selva/AI/src/main/resources/input.txt");
-        File dest = new File("/Users/selvaram/selva/AI/src/main/resources/output.txt");
+        String src = "/Users/selvaram/selva/AI/src/main/resources/input.txt";
+        String dest = "/Users/selvaram/selva/AI/src/main/resources/output.txt";
+        driver(new String[]{src, dest});
+    }
+
+    public static void driver(String[] args) throws IOException {
+        File source = new File(args[0]);
+        File dest = new File(args[1]);
 
         BufferedReader in = new BufferedReader(new FileReader(source));
 
